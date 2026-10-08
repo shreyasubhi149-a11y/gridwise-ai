@@ -1,0 +1,3240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>GridWise AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Inter,
+                Segoe UI,
+                Arial,
+                sans-serif;
+
+            background:
+                #07111f;
+
+            color: #edf4ff;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .container {
+            width: min(1450px, 94%);
+            margin: auto;
+        }
+
+        header {
+            padding: 25px 0;
+            border-bottom:
+                1px solid #1c3049;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #91a6bf;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: 0;
+            border-radius: 9px;
+            padding: 10px 15px;
+            background: #17304d;
+            color: white;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            background: #214465;
+        }
+
+        .primary {
+            background: #16a37a;
+        }
+
+        .primary:hover {
+            background: #11916c;
+        }
+
+        .danger {
+            background: #a9364d;
+        }
+
+        .warning {
+            background: #9c7120;
+        }
+
+        .secondary {
+            background: #263c55;
+        }
+
+        .mode-box {
+            margin: 22px 0;
+            background: #0d1b2c;
+            border: 1px solid #1c3049;
+            padding: 16px;
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mode-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .mode-info span {
+            color: #8da4bf;
+            font-size: 13px;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mode-buttons button.active {
+            background: #16a37a;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            background: #0d1b2c;
+            border: 1px solid #1c3049;
+            border-radius: 13px;
+            padding: 18px;
+        }
+
+        .card-label {
+            color: #8ea4bd;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .card-value {
+            font-size: 27px;
+            font-weight: 750;
+        }
+
+        .card-small {
+            color: #718aa5;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        section {
+            margin-top: 22px;
+        }
+
+        .section-title {
+            font-size: 19px;
+            font-weight: 750;
+            margin-bottom: 12px;
+        }
+
+        .alert {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2b1720,
+                    #211524
+                );
+
+            border:
+                1px solid #703447;
+
+            border-radius: 13px;
+            padding: 17px;
+            margin-bottom: 12px;
+        }
+
+        .alert-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .alert-name {
+            font-size: 17px;
+            font-weight: 750;
+        }
+
+        .alert-details {
+            color: #c8d2df;
+            font-size: 13px;
+            margin-top: 7px;
+            line-height: 1.6;
+        }
+
+        .countdown {
+            color: #ffcb72;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .alert-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 13px;
+        }
+
+        .empty {
+            color: #7088a3;
+            padding: 18px;
+            text-align: center;
+            border:
+                1px dashed #29405a;
+            border-radius: 12px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom:
+                1px solid #1a2b40;
+        }
+
+        .stat-row:last-child {
+            border-bottom: 0;
+        }
+
+        .stat-row span:first-child {
+            color: #91a7c0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom:
+                1px solid #1a2c42;
+            font-size: 13px;
+        }
+
+        th {
+            color: #8ea4bd;
+            font-weight: 600;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-on {
+            background: #123f34;
+            color: #65e3bb;
+        }
+
+        .status-off {
+            background: #3a2028;
+            color: #ff879d;
+        }
+
+        .critical {
+            color: #ff8b9e;
+        }
+
+        .important {
+            color: #ffc970;
+        }
+
+        .normal {
+            color: #7fc8ff;
+        }
+
+        .noncritical {
+            color: #6ee0ae;
+        }
+
+        .mini-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .mini-buttons button {
+            padding: 7px 9px;
+            font-size: 12px;
+        }
+
+        .chart {
+            display: flex;
+            align-items: end;
+            gap: 3px;
+            height: 180px;
+            padding-top: 20px;
+        }
+
+        .bar {
+            flex: 1;
+            min-width: 3px;
+            background: #16a37a;
+            border-radius: 4px 4px 0 0;
+            opacity: 0.85;
+        }
+
+        .event {
+            padding: 11px 0;
+            border-bottom:
+                1px solid #1b2c41;
+        }
+
+        .event:last-child {
+            border-bottom: 0;
+        }
+
+        .event-message {
+            font-size: 13px;
+        }
+
+        .event-time {
+            color: #6e87a2;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .hardware {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .hardware-card {
+            background: #0a1727;
+            border: 1px solid #1d344e;
+            padding: 13px;
+            border-radius: 10px;
+        }
+
+        .hardware-name {
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .hardware-state {
+            color: #8fa7c0;
+            font-size: 12px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        label {
+            display: block;
+            color: #91a7bf;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            background: #071321;
+            border: 1px solid #29415b;
+            color: white;
+            border-radius: 8px;
+            padding: 10px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #16a37a;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background:
+                rgba(0, 0, 0, 0.72);
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: min(650px, 100%);
+            background: #0d1b2c;
+            border: 1px solid #29415b;
+            border-radius: 14px;
+            padding: 22px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .modal-header strong {
+            font-size: 19px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            background: #10243a;
+            border: 1px solid #31506e;
+            color: white;
+            padding: 13px 17px;
+            border-radius: 9px;
+            display: none;
+            max-width: 380px;
+            z-index: 200;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .loading {
+            color: #8199b2;
+        }
+
+        @media (max-width: 1050px) {
+
+            .grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .grid,
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            th:nth-child(4),
+            td:nth-child(4) {
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="container topbar">
+
+        <div>
+
+            <div class="brand">
+                GridWise AI
+            </div>
+
+            <div class="subtitle">
+                Intelligent energy monitoring,
+                tariff analysis and load control
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="primary"
+                onclick="enableNotifications()"
+            >
+                Enable Notifications
+            </button>
+
+            <button
+                onclick="triggerDemoAlert()"
+            >
+                Trigger Demo Alert
+            </button>
+
+            <button
+                class="secondary"
+                onclick="resetDemo()"
+            >
+                Reset Demo
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- DAY / NIGHT -->
+
+    <div class="mode-box">
+
+        <div class="mode-info">
+
+            <strong>
+                Operating Priority Mode
+            </strong>
+
+            <span>
+                AI uses different appliance
+                priorities for day and night.
+            </span>
+
+        </div>
+
+
+        <div class="mode-buttons">
+
+            <button
+                id="dayButton"
+                onclick="setMode('day')"
+            >
+                Day
+            </button>
+
+            <button
+                id="nightButton"
+                onclick="setMode('night')"
+            >
+                Night
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- KPI -->
+
+    <div class="grid">
+
+        <div class="card">
+
+            <div class="card-label">
+                Today's Energy
+            </div>
+
+            <div
+                class="card-value"
+                id="todayEnergy"
+            >
+                --
+            </div>
+
+            <div class="card-small">
+                kWh
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                Today's Cost
+            </div>
+
+            <div
+                class="card-value"
+                id="todayCost"
+            >
+                --
+            </div>
+
+            <div class="card-small">
+                Automatically calculated
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                Current Tariff
+            </div>
+
+            <div
+                class="card-value"
+                id="currentTariff"
+            >
+                --
+            </div>
+
+            <div
+                class="card-small"
+                id="tariffPeriod"
+            >
+                --
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-label">
+                System Demand
+            </div>
+
+            <div
+                class="card-value"
+                id="systemDemand"
+            >
+                --
+            </div>
+
+            <div
+                class="card-small"
+                id="systemPressure"
+            >
+                --
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ALERTS -->
+
+    <section>
+
+        <div class="section-title">
+            Active Energy Alerts
+        </div>
+
+        <div id="alertsContainer">
+
+            <div class="empty">
+                Loading alerts...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENERGY -->
+
+    <section>
+
+        <div class="two-column">
+
+
+            <div class="card">
+
+                <div class="section-title">
+                    Energy & Tariff
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Today
+                    </span>
+
+                    <strong id="energyToday">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        This Month
+                    </span>
+
+                    <strong id="monthEnergy">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Month Cost
+                    </span>
+
+                    <strong id="monthCost">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        60-Day Energy
+                    </span>
+
+                    <strong id="sixtyEnergy">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Accounted Energy
+                    </span>
+
+                    <strong id="accountedEnergy">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Unaccounted Estimate
+                    </span>
+
+                    <strong id="unaccountedEnergy">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        60-Day Cost
+                    </span>
+
+                    <strong id="sixtyCost">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="section-title">
+                    Last 24 Hours
+                </div>
+
+                <div
+                    id="energyChart"
+                    class="chart"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- OPTIMIZATION -->
+
+    <section>
+
+        <div class="two-column">
+
+
+            <div class="card">
+
+                <div class="section-title">
+                    AI Optimization
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Baseline
+                    </span>
+
+                    <strong id="baseline">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Optimized
+                    </span>
+
+                    <strong id="optimized">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Daily Saving
+                    </span>
+
+                    <strong id="saving">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="stat-row">
+
+                    <span>
+                        Estimated Cost Saving
+                    </span>
+
+                    <strong id="savingCost">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="section-title">
+                    Manual Energy Entry
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div>
+
+                        <label>
+                            Energy consumed
+                        </label>
+
+                        <input
+                            id="energyInput"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            placeholder="e.g. 5.5"
+                        >
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            align-items:end;
+                        "
+                    >
+
+                        <button
+                            class="primary"
+                            style="width:100%"
+                            onclick="addEnergy()"
+                        >
+                            Add Energy Reading
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="energyResult"
+                    class="card-small"
+                    style="margin-top:12px"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MACHINES -->
+
+    <section>
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:10px;
+                flex-wrap:wrap;
+                margin-bottom:12px;
+            "
+        >
+
+            <div class="section-title">
+                Appliances & Machines
+            </div>
+
+            <button
+                class="primary"
+                onclick="openMachineModal()"
+            >
+                + Add Machine
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div style="overflow-x:auto">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Machine
+                            </th>
+
+                            <th>
+                                Current
+                            </th>
+
+                            <th>
+                                Limit
+                            </th>
+
+                            <th>
+                                Day / Night Priority
+                            </th>
+
+                            <th>
+                                Criticality
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Controls
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="machinesTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HARDWARE -->
+
+    <section>
+
+        <div class="section-title">
+            Hardware / Relay Simulation
+        </div>
+
+        <div
+            class="card"
+            id="hardwareContainer"
+        ></div>
+
+    </section>
+
+
+    <!-- RECENT ACTIVITY -->
+
+    <section>
+
+        <div class="section-title">
+            Recent Activity
+        </div>
+
+        <div
+            class="card"
+            id="eventsContainer"
+        ></div>
+
+    </section>
+
+
+</main>
+
+
+<!-- MACHINE MODAL -->
+
+<div
+    class="modal"
+    id="machineModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <strong id="modalTitle">
+                Add Machine
+            </strong>
+
+            <button
+                onclick="closeMachineModal()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <input
+            id="machineId"
+            type="hidden"
+        >
+
+
+        <div class="form-grid">
+
+
+            <div>
+
+                <label>
+                    Machine Name
+                </label>
+
+                <input
+                    id="machineName"
+                    placeholder="Production Motor"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Category
+                </label>
+
+                <input
+                    id="machineCategory"
+                    placeholder="Industrial"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Base Power kW
+                </label>
+
+                <input
+                    id="machineBase"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Usage Limit kW
+                </label>
+
+                <input
+                    id="machineLimit"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Day Priority
+                </label>
+
+                <input
+                    id="dayPriority"
+                    type="number"
+                    min="1"
+                    max="100"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Night Priority
+                </label>
+
+                <input
+                    id="nightPriority"
+                    type="number"
+                    min="1"
+                    max="100"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Criticality
+                </label>
+
+                <select id="criticality">
+
+                    <option>
+                        Critical
+                    </option>
+
+                    <option>
+                        Important
+                    </option>
+
+                    <option selected>
+                        Normal
+                    </option>
+
+                    <option>
+                        Non-critical
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    AI Delay
+                </label>
+
+                <select id="shutdownDelay">
+
+                    <option value="5">
+                        5 minutes
+                    </option>
+
+                    <option value="10">
+                        10 minutes
+                    </option>
+
+                    <option value="15">
+                        15 minutes
+                    </option>
+
+                    <option value="20">
+                        20 minutes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="full">
+
+                <label>
+                    <input
+                        id="autoShutdown"
+                        type="checkbox"
+                        checked
+                        style="width:auto"
+                    >
+
+                    Allow AI to automatically stop
+                    this machine
+                </label>
+
+            </div>
+
+
+            <div class="full">
+
+                <button
+                    class="primary"
+                    style="width:100%"
+                    onclick="saveMachine()"
+                >
+                    Save Machine
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+let dashboardData = null;
+let previousAlertIds = new Set();
+let notificationPermissionAsked = false;
+
+
+// ==========================================================
+// HELPERS
+// ==========================================================
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+function money(value) {
+
+    const number = Number(value || 0);
+
+    return "₹" + number.toFixed(2);
+}
+
+
+function number(value, decimals = 2) {
+
+    return Number(value || 0)
+        .toFixed(decimals);
+}
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    if (!toast) return;
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 3500);
+}
+
+
+// ==========================================================
+// API
+// ==========================================================
+
+async function api(url, options = {}) {
+
+    try {
+
+        const response =
+            await fetch(url, options);
+
+
+        let data = null;
+
+
+        try {
+
+            data = await response.json();
+
+        } catch (error) {
+
+            throw new Error(
+                "Server returned an invalid response."
+            );
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data?.error ||
+                `Request failed (${response.status})`
+            );
+        }
+
+
+        return data;
+
+    } catch (error) {
+
+        console.error(
+            "API error:",
+            error
+        );
+
+        throw error;
+    }
+}
+
+
+// ==========================================================
+// DASHBOARD
+// ==========================================================
+
+async function loadDashboard() {
+
+    try {
+
+        const data =
+            await api(
+                "/api/dashboard"
+            );
+
+
+        if (!data || data.success !== true) {
+
+            throw new Error(
+                "Dashboard data is unavailable."
+            );
+        }
+
+
+        dashboardData = data;
+
+
+        renderDashboard(
+            data
+        );
+
+
+        checkNewAlerts(
+            data.alerts || []
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard error:",
+            error
+        );
+
+
+        showToast(
+            "Dashboard could not be loaded: " +
+            error.message
+        );
+
+
+        document.getElementById(
+            "alertsContainer"
+        ).innerHTML =
+            `
+            <div class="empty">
+                Dashboard data could not be loaded.
+                Check the Flask terminal for errors.
+            </div>
+            `;
+    }
+}
+
+
+// ==========================================================
+// RENDER DASHBOARD
+// ==========================================================
+
+function renderDashboard(data) {
+
+    const energy =
+        data.energy || {};
+
+    const optimization =
+        data.optimization || {};
+
+    const system =
+        data.system || {};
+
+    const settings =
+        data.settings || {};
+
+
+    // ------------------------------------------------------
+    // KPI
+    // ------------------------------------------------------
+
+    document.getElementById(
+        "todayEnergy"
+    ).textContent =
+        number(
+            energy.today_kwh
+        );
+
+
+    document.getElementById(
+        "todayCost"
+    ).textContent =
+        money(
+            energy.today_cost
+        );
+
+
+    document.getElementById(
+        "currentTariff"
+    ).textContent =
+        money(
+            energy.current_rate
+        ) + "/kWh";
+
+
+    document.getElementById(
+        "tariffPeriod"
+    ).textContent =
+        energy.current_period ||
+        "--";
+
+
+    document.getElementById(
+        "systemDemand"
+    ).textContent =
+        number(
+            system.current_kw
+        ) +
+        " / " +
+        number(
+            system.limit_kw
+        ) +
+        " kW";
+
+
+    document.getElementById(
+        "systemPressure"
+    ).textContent =
+        system.pressure ||
+        "--";
+
+
+    // ------------------------------------------------------
+    // ENERGY
+    // ------------------------------------------------------
+
+    document.getElementById(
+        "energyToday"
+    ).textContent =
+        number(
+            energy.today_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "monthEnergy"
+    ).textContent =
+        number(
+            energy.month_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "monthCost"
+    ).textContent =
+        money(
+            energy.month_cost
+        );
+
+
+    document.getElementById(
+        "sixtyEnergy"
+    ).textContent =
+        number(
+            energy.sixty_day_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "accountedEnergy"
+    ).textContent =
+        number(
+            energy.accounted_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "unaccountedEnergy"
+    ).textContent =
+        number(
+            energy.unaccounted_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "sixtyCost"
+    ).textContent =
+        money(
+            energy.sixty_day_cost
+        );
+
+
+    // ------------------------------------------------------
+    // OPTIMIZATION
+    // ------------------------------------------------------
+
+    document.getElementById(
+        "baseline"
+    ).textContent =
+        number(
+            optimization.baseline_daily_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "optimized"
+    ).textContent =
+        number(
+            optimization.optimized_daily_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "saving"
+    ).textContent =
+        number(
+            optimization.saving_kwh
+        ) +
+        " kWh";
+
+
+    document.getElementById(
+        "savingCost"
+    ).textContent =
+        money(
+            optimization.saving_cost
+        );
+
+
+    // ------------------------------------------------------
+    // MODE
+    // ------------------------------------------------------
+
+    updateModeButtons(
+        data.mode || settings.mode || "day"
+    );
+
+
+    // ------------------------------------------------------
+    // OTHER UI
+    // ------------------------------------------------------
+
+    renderAlerts(
+        data.alerts || []
+    );
+
+    renderMachines(
+        data.machines || []
+    );
+
+    renderHardware(
+        data.hardware || []
+    );
+
+    renderEvents(
+        data.events || []
+    );
+
+    renderChart(
+        energy.hourly || []
+    );
+}
+
+
+// ==========================================================
+// DAY / NIGHT BUTTONS
+// ==========================================================
+
+function updateModeButtons(mode) {
+
+    document.getElementById(
+        "dayButton"
+    ).classList.toggle(
+        "active",
+        mode === "day"
+    );
+
+
+    document.getElementById(
+        "nightButton"
+    ).classList.toggle(
+        "active",
+        mode === "night"
+    );
+}
+
+
+async function setMode(mode) {
+
+    try {
+
+        await api(
+            "/api/settings",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    mode: mode
+                })
+            }
+        );
+
+
+        showToast(
+            "Priority mode changed to " +
+            mode.toUpperCase()
+        );
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// ALERTS
+// ==========================================================
+
+function renderAlerts(alerts) {
+
+    const container =
+        document.getElementById(
+            "alertsContainer"
+        );
+
+
+    if (!alerts.length) {
+
+        container.innerHTML =
+            `
+            <div class="empty">
+                No active energy alerts.
+                GridWise AI is monitoring the system.
+            </div>
+            `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        alerts.map(alert => {
+
+            const deadline =
+                new Date(
+                    alert.deadline
+                ).getTime();
+
+
+            const remaining =
+                Math.max(
+                    0,
+                    deadline -
+                    Date.now()
+                );
+
+
+            const minutes =
+                Math.floor(
+                    remaining /
+                    60000
+                );
+
+
+            const seconds =
+                Math.floor(
+                    (remaining %
+                    60000) /
+                    1000
+                );
+
+
+            const countdown =
+                String(minutes)
+                    .padStart(2, "0") +
+                ":" +
+                String(seconds)
+                    .padStart(2, "0");
+
+
+            return `
+
+            <div class="alert">
+
+                <div class="alert-top">
+
+                    <div>
+
+                        <div class="alert-name">
+                            ⚠
+                            ${escapeHtml(
+                                alert.machine_name
+                            )}
+                        </div>
+
+                        <div class="alert-details">
+
+                            Current usage:
+                            <strong>
+                                ${number(
+                                    alert.current_kw
+                                )} kW
+                            </strong>
+
+                            &nbsp;|&nbsp;
+
+                            Limit:
+                            <strong>
+                                ${number(
+                                    alert.limit_kw
+                                )} kW
+                            </strong>
+
+                            <br>
+
+                            Priority mode:
+                            <strong>
+                                ${escapeHtml(
+                                    alert.day_night_mode
+                                ).toUpperCase()}
+                            </strong>
+
+                            &nbsp;|&nbsp;
+
+                            Criticality:
+                            <strong>
+                                ${escapeHtml(
+                                    alert.criticality
+                                )}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div
+                            class="card-small"
+                            style="text-align:right"
+                        >
+                            AI decision window
+                        </div>
+
+                        <div
+                            class="countdown"
+                            id="countdown-${alert.id}"
+                        >
+                            ${countdown}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="alert-details">
+
+                    ${escapeHtml(
+                        alert.reason
+                    )}
+
+                </div>
+
+
+                <div class="alert-buttons">
+
+                    <button
+                        class="danger"
+                        onclick="alertAction(
+                            ${alert.id},
+                            'OFF'
+                        )"
+                    >
+                        Switch Off Manually
+                    </button>
+
+
+                    <button
+                        class="primary"
+                        onclick="alertAction(
+                            ${alert.id},
+                            'AI'
+                        )"
+                    >
+                        Let AI Decide
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+}
+
+
+// ==========================================================
+// ALERT ACTION
+// ==========================================================
+
+async function alertAction(
+    alertId,
+    action
+) {
+
+    try {
+
+        const result =
+            await api(
+                `/api/alerts/${alertId}/action`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        action: action
+                    })
+                }
+            );
+
+
+        showToast(
+            result.message ||
+            "Decision applied."
+        );
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// BROWSER NOTIFICATIONS
+// ==========================================================
+
+async function enableNotifications() {
+
+    if (!("Notification" in window)) {
+
+        showToast(
+            "This browser does not support notifications."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const permission =
+            await Notification.requestPermission();
+
+
+        if (permission !== "granted") {
+
+            showToast(
+                "Notification permission was not granted."
+            );
+
+            return;
+        }
+
+
+        const registration =
+            await navigator.serviceWorker.ready;
+
+
+        showToast(
+            "Notifications enabled."
+        );
+
+
+        // Show a test notification with both choices
+        await registration.showNotification(
+            "GridWise AI Notifications Enabled",
+            {
+                body:
+                    "Future energy alerts will let you choose manual stop or AI decision.",
+
+                icon:
+                    "/static/icon-192.png",
+
+                actions: [
+                    {
+                        action: "OFF",
+                        title: "Switch Off"
+                    },
+                    {
+                        action: "AI",
+                        title: "Let AI Decide"
+                    }
+                ],
+
+                data: {
+                    alertId: null
+                }
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        showToast(
+            "Could not enable notifications."
+        );
+    }
+}
+
+
+// ==========================================================
+// NEW ALERT NOTIFICATION
+// ==========================================================
+
+function checkNewAlerts(alerts) {
+
+    const currentIds =
+        new Set(
+            alerts.map(
+                alert => alert.id
+            )
+        );
+
+
+    alerts.forEach(
+        alert => {
+
+            if (
+                previousAlertIds.size > 0 &&
+                !previousAlertIds.has(
+                    alert.id
+                )
+            ) {
+
+                showAlertNotification(
+                    alert
+                );
+            }
+
+        }
+    );
+
+
+    previousAlertIds =
+        currentIds;
+}
+
+
+async function showAlertNotification(
+    alert
+) {
+
+    if (
+        !("Notification" in window) ||
+        Notification.permission !== "granted"
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        const registration =
+            await navigator.serviceWorker.ready;
+
+
+        await registration.showNotification(
+            "GridWise AI Energy Alert",
+            {
+                body:
+                    `${alert.machine_name} is using ` +
+                    `${number(alert.current_kw)} kW, ` +
+                    `above its ${number(alert.limit_kw)} kW limit.`,
+
+                icon:
+                    "/static/icon-192.png",
+
+                badge:
+                    "/static/icon-192.png",
+
+                tag:
+                    `gridwise-alert-${alert.id}`,
+
+                renotify: true,
+
+                actions: [
+                    {
+                        action: "OFF",
+                        title: "Switch Off"
+                    },
+                    {
+                        action: "AI",
+                        title: "Let AI Decide"
+                    }
+                ],
+
+                data: {
+                    alertId:
+                        alert.id
+                }
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Notification error:",
+            error
+        );
+    }
+}
+
+
+// ==========================================================
+// MACHINE TABLE
+// ==========================================================
+
+function renderMachines(machines) {
+
+    const table =
+        document.getElementById(
+            "machinesTable"
+        );
+
+
+    if (!machines.length) {
+
+        table.innerHTML =
+            `
+            <tr>
+                <td colspan="7">
+                    No machines configured.
+                </td>
+            </tr>
+            `;
+
+        return;
+    }
+
+
+    table.innerHTML =
+        machines.map(machine => {
+
+            const criticalityClass =
+                machine.criticality
+                    .toLowerCase()
+                    .replace("-", "");
+
+
+            return `
+
+            <tr>
+
+                <td>
+
+                    <strong>
+                        ${escapeHtml(
+                            machine.name
+                        )}
+                    </strong>
+
+                    <br>
+
+                    <span class="card-small">
+                        ${escapeHtml(
+                            machine.category
+                        )}
+                    </span>
+
+                </td>
+
+
+                <td>
+                    ${number(
+                        machine.current_kw
+                    )} kW
+                </td>
+
+
+                <td>
+                    ${number(
+                        machine.limit_kw
+                    )} kW
+                </td>
+
+
+                <td>
+
+                    Day:
+                    ${machine.day_priority}
+
+                    <br>
+
+                    Night:
+                    ${machine.night_priority}
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="${criticalityClass}"
+                    >
+                        ${escapeHtml(
+                            machine.criticality
+                        )}
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="status ${
+                            machine.status === "ON"
+                                ? "status-on"
+                                : "status-off"
+                        }"
+                    >
+                        ${machine.status}
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <div class="mini-buttons">
+
+                        <button
+                            onclick="controlMachine(
+                                ${machine.id},
+                                'ON'
+                            )"
+                        >
+                            ON
+                        </button>
+
+
+                        <button
+                            class="danger"
+                            onclick="controlMachine(
+                                ${machine.id},
+                                'OFF'
+                            )"
+                        >
+                            OFF
+                        </button>
+
+
+                        <button
+                            onclick="editMachine(
+                                ${machine.id}
+                            )"
+                        >
+                            Edit
+                        </button>
+
+
+                        <button
+                            onclick="deleteMachine(
+                                ${machine.id}
+                            )"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        }).join("");
+}
+
+
+// ==========================================================
+// MACHINE CONTROL
+// ==========================================================
+
+async function controlMachine(
+    id,
+    command
+) {
+
+    try {
+
+        const result =
+            await api(
+                `/api/machines/${id}/control`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        command: command
+                    })
+                }
+            );
+
+
+        showToast(
+            result.message
+        );
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// MACHINE MODAL
+// ==========================================================
+
+function openMachineModal(
+    machine = null
+) {
+
+    document.getElementById(
+        "machineModal"
+    ).classList.add(
+        "show"
+    );
+
+
+    if (!machine) {
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            "Add Machine";
+
+
+        document.getElementById(
+            "machineId"
+        ).value = "";
+
+
+        document.getElementById(
+            "machineName"
+        ).value = "";
+
+
+        document.getElementById(
+            "machineCategory"
+        ).value = "";
+
+
+        document.getElementById(
+            "machineBase"
+        ).value = "1";
+
+
+        document.getElementById(
+            "machineLimit"
+        ).value = "2";
+
+
+        document.getElementById(
+            "dayPriority"
+        ).value = "50";
+
+
+        document.getElementById(
+            "nightPriority"
+        ).value = "50";
+
+
+        document.getElementById(
+            "criticality"
+        ).value = "Normal";
+
+
+        document.getElementById(
+            "shutdownDelay"
+        ).value = "5";
+
+
+        document.getElementById(
+            "autoShutdown"
+        ).checked = true;
+
+    }
+
+}
+
+
+function closeMachineModal() {
+
+    document.getElementById(
+        "machineModal"
+    ).classList.remove(
+        "show"
+    );
+}
+
+
+// ==========================================================
+// EDIT MACHINE
+// ==========================================================
+
+function editMachine(id) {
+
+    const machine =
+        (dashboardData?.machines || [])
+        .find(
+            item => item.id === id
+        );
+
+
+    if (!machine) {
+
+        showToast(
+            "Machine data not found."
+        );
+
+        return;
+    }
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Edit Machine";
+
+
+    document.getElementById(
+        "machineId"
+    ).value =
+        machine.id;
+
+
+    document.getElementById(
+        "machineName"
+    ).value =
+        machine.name;
+
+
+    document.getElementById(
+        "machineCategory"
+    ).value =
+        machine.category;
+
+
+    document.getElementById(
+        "machineBase"
+    ).value =
+        machine.base_kw;
+
+
+    document.getElementById(
+        "machineLimit"
+    ).value =
+        machine.limit_kw;
+
+
+    document.getElementById(
+        "dayPriority"
+    ).value =
+        machine.day_priority;
+
+
+    document.getElementById(
+        "nightPriority"
+    ).value =
+        machine.night_priority;
+
+
+    document.getElementById(
+        "criticality"
+    ).value =
+        machine.criticality;
+
+
+    document.getElementById(
+        "shutdownDelay"
+    ).value =
+        machine.shutdown_delay;
+
+
+    document.getElementById(
+        "autoShutdown"
+    ).checked =
+        machine.auto_shutdown;
+
+
+    document.getElementById(
+        "machineModal"
+    ).classList.add(
+        "show"
+    );
+}
+
+
+// ==========================================================
+// SAVE MACHINE
+// ==========================================================
+
+async function saveMachine() {
+
+    const id =
+        document.getElementById(
+            "machineId"
+        ).value;
+
+
+    const payload = {
+
+        name:
+            document.getElementById(
+                "machineName"
+            ).value.trim(),
+
+        category:
+            document.getElementById(
+                "machineCategory"
+            ).value.trim(),
+
+        base_kw:
+            Number(
+                document.getElementById(
+                    "machineBase"
+                ).value
+            ),
+
+        limit_kw:
+            Number(
+                document.getElementById(
+                    "machineLimit"
+                ).value
+            ),
+
+        day_priority:
+            Number(
+                document.getElementById(
+                    "dayPriority"
+                ).value
+            ),
+
+        night_priority:
+            Number(
+                document.getElementById(
+                    "nightPriority"
+                ).value
+            ),
+
+        criticality:
+            document.getElementById(
+                "criticality"
+            ).value,
+
+        shutdown_delay:
+            Number(
+                document.getElementById(
+                    "shutdownDelay"
+                ).value
+            ),
+
+        auto_shutdown:
+            document.getElementById(
+                "autoShutdown"
+            ).checked
+    };
+
+
+    if (!payload.name) {
+
+        showToast(
+            "Machine name is required."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        if (id) {
+
+            await api(
+                `/api/machines/${id}`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+
+        } else {
+
+            await api(
+                "/api/machines",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+
+        }
+
+
+        closeMachineModal();
+
+
+        showToast(
+            "Machine saved successfully."
+        );
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// DELETE
+// ==========================================================
+
+async function deleteMachine(id) {
+
+    const machine =
+        (dashboardData?.machines || [])
+        .find(
+            item => item.id === id
+        );
+
+
+    if (!machine) return;
+
+
+    if (
+        !confirm(
+            `Delete ${machine.name}?`
+        )
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        const result =
+            await api(
+                `/api/machines/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        showToast(
+            result.message
+        );
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// HARDWARE
+// ==========================================================
+
+function renderHardware(items) {
+
+    const container =
+        document.getElementById(
+            "hardwareContainer"
+        );
+
+
+    if (!items.length) {
+
+        container.innerHTML =
+            `
+            <div class="empty">
+                No hardware state available.
+            </div>
+            `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        `
+        <div class="hardware">
+
+            ${
+                items.map(item => `
+
+                    <div class="hardware-card">
+
+                        <div class="hardware-name">
+                            ${escapeHtml(
+                                item.machine_name
+                            )}
+                        </div>
+
+                        <div class="hardware-state">
+                            Relay:
+                            <strong>
+                                ${item.relay_state}
+                            </strong>
+                        </div>
+
+                        <div class="hardware-state">
+                            Last command:
+                            ${item.last_command || "--"}
+                        </div>
+
+                        <div class="hardware-state">
+                            ${item.last_command_at || "--"}
+                        </div>
+
+                    </div>
+
+                `).join("")
+            }
+
+        </div>
+        `;
+}
+
+
+// ==========================================================
+// EVENTS
+// ==========================================================
+
+function renderEvents(events) {
+
+    const container =
+        document.getElementById(
+            "eventsContainer"
+        );
+
+
+    if (!events.length) {
+
+        container.innerHTML =
+            `
+            <div class="empty">
+                No activity recorded yet.
+            </div>
+            `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        events.map(event => `
+
+            <div class="event">
+
+                <div class="event-message">
+
+                    <strong>
+                        ${escapeHtml(
+                            event.event_type
+                        )}
+                    </strong>
+
+                    —
+                    ${escapeHtml(
+                        event.message
+                    )}
+
+                </div>
+
+
+                <div class="event-time">
+
+                    ${escapeHtml(
+                        event.created_at
+                    )}
+
+                </div>
+
+            </div>
+
+        `).join("");
+}
+
+
+// ==========================================================
+// CHART
+// ==========================================================
+
+function renderChart(rows) {
+
+    const chart =
+        document.getElementById(
+            "energyChart"
+        );
+
+
+    if (!rows.length) {
+
+        chart.innerHTML =
+            `
+            <div class="empty">
+                No energy data.
+            </div>
+            `;
+
+        return;
+    }
+
+
+    const values =
+        rows.map(
+            row => Number(
+                row.kwh || 0
+            )
+        );
+
+
+    const max =
+        Math.max(
+            ...values,
+            1
+        );
+
+
+    chart.innerHTML =
+        values.map(
+            value => {
+
+                const height =
+                    Math.max(
+                        4,
+                        (value / max) * 150
+                    );
+
+
+                return `
+                    <div
+                        class="bar"
+                        style="
+                            height:${height}px
+                        "
+                        title="${value} kWh"
+                    ></div>
+                `;
+
+            }
+        ).join("");
+}
+
+
+// ==========================================================
+// ENERGY ENTRY
+// ==========================================================
+
+async function addEnergy() {
+
+    const input =
+        document.getElementById(
+            "energyInput"
+        );
+
+
+    const kwh =
+        Number(
+            input.value
+        );
+
+
+    if (!kwh || kwh <= 0) {
+
+        showToast(
+            "Enter a valid energy value."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const result =
+            await api(
+                "/api/energy",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        kwh: kwh
+                    })
+                }
+            );
+
+
+        document.getElementById(
+            "energyResult"
+        ).textContent =
+            `${result.kwh.toFixed(2)} kWh × ` +
+            `₹${result.tariff.toFixed(2)}/kWh ` +
+            `(${result.period}) = ` +
+            `₹${result.cost.toFixed(2)}`;
+
+
+        input.value = "";
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// DEMO ALERT
+// ==========================================================
+
+async function triggerDemoAlert() {
+
+    try {
+
+        const result =
+            await api(
+                "/api/demo/trigger-alert",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        showToast(
+            result.message
+        );
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// RESET
+// ==========================================================
+
+async function resetDemo() {
+
+    if (
+        !confirm(
+            "Reset the GridWise AI demo data?"
+        )
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        const result =
+            await api(
+                "/api/reset",
+                {
+                    method: "POST"
+                }
+            );
+
+
+        previousAlertIds =
+            new Set();
+
+
+        showToast(
+            result.message
+        );
+
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+// ==========================================================
+// COUNTDOWN REFRESH
+// ==========================================================
+
+setInterval(
+    () => {
+
+        if (
+            dashboardData &&
+            Array.isArray(
+                dashboardData.alerts
+            )
+        ) {
+
+            renderAlerts(
+                dashboardData.alerts
+            );
+
+        }
+
+    },
+    1000
+);
+
+
+// ==========================================================
+// POLLING
+// ==========================================================
+
+setInterval(
+    loadDashboard,
+    5000
+);
+
+
+// ==========================================================
+// SERVICE WORKER REGISTRATION
+// ==========================================================
+
+async function registerServiceWorker() {
+
+    if (
+        !("serviceWorker" in navigator)
+    ) {
+
+        console.warn(
+            "Service workers not supported."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const registration =
+            await navigator.serviceWorker.register(
+                "/service-worker.js",
+                {
+                    scope: "/"
+                }
+            );
+
+
+        console.log(
+            "GridWise AI service worker registered.",
+            registration.scope
+        );
+
+
+        navigator.serviceWorker.addEventListener(
+            "message",
+            event => {
+
+                if (
+                    event.data?.type ===
+                    "GRIDWISE_ALERT_ACTION"
+                ) {
+
+                    showToast(
+                        "Notification decision applied."
+                    );
+
+                    loadDashboard();
+                }
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Service worker error:",
+            error
+        );
+
+        showToast(
+            "Service worker could not be registered."
+        );
+    }
+}
+
+
+// ==========================================================
+// START
+// ==========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        registerServiceWorker();
+
+        loadDashboard();
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
