@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+gridwise_ai.db
+.env
